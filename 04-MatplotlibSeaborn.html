@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matplotlib & Seaborn — PyAnalyst</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="sidebar" id="sidebar"></div>
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-breadcrumb">Python Programming → <span>Matplotlib &amp; Seaborn</span></div>
+    <div class="topbar-btns">
+      <a href="03-pandas.html" class="btn btn-ghost">← Pandas</a>
+      <a href="05-flask.html" class="btn btn-primary">Next: Flask →</a>
+    </div>
+  </div>
+  <div class="content">
+
+    <div class="topic-hero">
+      <div class="eyebrow">Topic 04 · Python Programming</div>
+      <h1>Matplotlib &amp; Seaborn</h1>
+      <p>Data storytelling through visualisation. Matplotlib gives you full control over every pixel. Seaborn adds a beautiful layer on top for fast, statistical charts. Together, they cover every chart you'll ever need as a data analyst.</p>
+      <div class="tags">
+        <span>Line</span><span>Bar</span><span>Scatter</span><span>Heatmap</span><span>Histogram</span><span>Subplots</span><span>Seaborn themes</span><span>pairplot</span><span>boxplot</span>
+      </div>
+    </div>
+
+    <div class="callout callout-info">
+      <div class="callout-icon">📦</div>
+      <div><div class="callout-title">Installation &amp; imports</div><p><code>pip install matplotlib seaborn</code></p><p style="margin-top:6px"><code>import matplotlib.pyplot as plt</code><br><code>import seaborn as sns</code></p></div>
+    </div>
+
+    <h2 class="concept-title">1. Matplotlib Basics — Figure &amp; Axes</h2>
+    <p>Every Matplotlib chart has two core objects: the <strong>Figure</strong> (the canvas) and the <strong>Axes</strong> (the plot area within the canvas). Understanding this separates clean, professional charts from messy ones.</p>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">python</span><button class="copy-btn btn btn-ghost" style="padding:4px 10px;font-size:11px;">Copy</button></div>
+      <pre><span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+
+<span class="cm"># Create figure + axes (recommended approach)</span>
+fig, ax = plt.subplots(figsize=(<span class="num">8</span>, <span class="num">5</span>))   <span class="cm"># width=8in, height=5in</span>
+
+months = [<span class="str">"Jan"</span>, <span class="str">"Feb"</span>, <span class="str">"Mar"</span>, <span class="str">"Apr"</span>, <span class="str">"May"</span>]
+sales  = [<span class="num">12000</span>, <span class="num">15000</span>, <span class="num">13500</span>, <span class="num">17000</span>, <span class="num">19500</span>]
+
+ax.plot(months, sales, color=<span class="str">"#4f8ef7"</span>, linewidth=<span class="num">2</span>, marker=<span class="str">"o"</span>)
+
+<span class="cm"># Labels & formatting</span>
+ax.set_title(<span class="str">"Monthly Sales 2024"</span>, fontsize=<span class="num">16</span>, fontweight=<span class="str">"bold"</span>)
+ax.set_xlabel(<span class="str">"Month"</span>, fontsize=<span class="num">12</span>)
+ax.set_ylabel(<span class="str">"Sales (₹)"</span>, fontsize=<span class="num">12</span>)
+ax.yaxis.set_major_formatter(plt.FuncFormatter(<span class="kw">lambda</span> x, _: <span class="fn">f</span><span class="str">"₹{x/1000:.0f}K"</span>))
+ax.grid(axis=<span class="str">"y"</span>, alpha=<span class="num">0.3</span>)
+ax.spines[<span class="str">"top"</span>].set_visible(<span class="kw">False</span>)
+ax.spines[<span class="str">"right"</span>].set_visible(<span class="kw">False</span>)
+
+plt.tight_layout()
+plt.savefig(<span class="str">"sales_chart.png"</span>, dpi=<span class="num">150</span>, bbox_inches=<span class="str">"tight"</span>)
+plt.show()</pre>
+    </div>
+
+    <h2 class="concept-title">2. Bar Charts</h2>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">python</span><button class="copy-btn btn btn-ghost" style="padding:4px 10px;font-size:11px;">Copy</button></div>
+      <pre>departments = [<span class="str">"Sales"</span>, <span class="str">"IT"</span>, <span class="str">"HR"</span>, <span class="str">"Finance"</span>]
+avg_salary  = [<span class="num">58000</span>, <span class="num">74000</span>, <span class="num">50000</span>, <span class="num">65000</span>]
+
+fig, ax = plt.subplots(figsize=(<span class="num">8</span>, <span class="num">5</span>))
+
+bars = ax.bar(departments, avg_salary,
+              color=[<span class="str">"#4f8ef7"</span>, <span class="str">"#00d4aa"</span>, <span class="str">"#f7a84f"</span>, <span class="str">"#f74f82"</span>],
+              edgecolor=<span class="str">"white"</span>, linewidth=<span class="num">0.8</span>)
+
+<span class="cm"># Add value labels on top of bars</span>
+<span class="kw">for</span> bar, val <span class="kw">in</span> <span class="fn">zip</span>(bars, avg_salary):
+    ax.text(bar.get_x() + bar.get_width()/<span class="num">2</span>, bar.get_height() + <span class="num">500</span>,
+            <span class="fn">f</span><span class="str">"₹{val/1000:.0f}K"</span>, ha=<span class="str">"center"</span>, va=<span class="str">"bottom"</span>, fontsize=<span class="num">11</span>)
+
+ax.set_title(<span class="str">"Average Salary by Department"</span>, fontsize=<span class="num">15</span>, fontweight=<span class="str">"bold"</span>)
+ax.set_ylabel(<span class="str">"Average Salary (₹)"</span>)
+
+<span class="cm"># Horizontal bar chart</span>
+ax.barh(departments, avg_salary)</pre>
+    </div>
+
+    <h2 class="concept-title">3. Scatter Plots</h2>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">python</span><button class="copy-btn btn btn-ghost" style="padding:4px 10px;font-size:11px;">Copy</button></div>
+      <pre><span class="kw">import</span> numpy <span class="kw">as</span> np
+
+experience = np.array([<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>, <span class="num">5</span>, <span class="num">6</span>, <span class="num">7</span>, <span class="num">8</span>])
+salary     = np.array([<span class="num">35</span>, <span class="num">42</span>, <span class="num">50</span>, <span class="num">58</span>, <span class="num">65</span>, <span class="num">74</span>, <span class="num">80</span>, <span class="num">92</span>]) * <span class="num">1000</span>
+
+fig, ax = plt.subplots(figsize=(<span class="num">8</span>, <span class="num">5</span>))
+ax.scatter(experience, salary, s=<span class="num">100</span>, color=<span class="str">"#4f8ef7"</span>, alpha=<span class="num">0.8</span>, edgecolors=<span class="str">"white"</span>)
+
+<span class="cm"># Add trend line</span>
+z = np.polyfit(experience, salary, <span class="num">1</span>)
+p = np.poly1d(z)
+ax.plot(experience, p(experience), <span class="str">"--"</span>, color=<span class="str">"#f74f82"</span>, linewidth=<span class="num">1.5</span>, label=<span class="str">"Trend"</span>)
+
+ax.set_title(<span class="str">"Experience vs Salary"</span>, fontsize=<span class="num">15</span>)
+ax.set_xlabel(<span class="str">"Years of Experience"</span>)
+ax.set_ylabel(<span class="str">"Salary (₹)"</span>)
+ax.legend()
+plt.tight_layout()
+plt.show()</pre>
+    </div>
+
+    <h2 class="concept-title">4. Histograms &amp; Subplots</h2>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">python</span><button class="copy-btn btn btn-ghost" style="padding:4px 10px;font-size:11px;">Copy</button></div>
+      <pre><span class="cm"># Histogram</span>
+data = np.random.normal(<span class="num">65</span>, <span class="num">12</span>, <span class="num">1000</span>)
+fig, ax = plt.subplots()
+ax.hist(data, bins=<span class="num">30</span>, color=<span class="str">"#4f8ef7"</span>, edgecolor=<span class="str">"white"</span>, alpha=<span class="num">0.8</span>)
+ax.set_title(<span class="str">"Exam Score Distribution"</span>)
+ax.set_xlabel(<span class="str">"Score"</span>)
+ax.set_ylabel(<span class="str">"Frequency"</span>)
+plt.show()
+
+<span class="cm"># Multiple subplots — 2 rows × 2 cols</span>
+fig, axes = plt.subplots(<span class="num">2</span>, <span class="num">2</span>, figsize=(<span class="num">12</span>, <span class="num">8</span>))
+
+axes[<span class="num">0</span>, <span class="num">0</span>].plot([<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>], [<span class="num">4</span>,<span class="num">5</span>,<span class="num">6</span>])
+axes[<span class="num">0</span>, <span class="num">0</span>].set_title(<span class="str">"Line chart"</span>)
+
+axes[<span class="num">0</span>, <span class="num">1</span>].bar([<span class="str">"A"</span>,<span class="str">"B"</span>,<span class="str">"C"</span>], [<span class="num">10</span>,<span class="num">25</span>,<span class="num">15</span>])
+axes[<span class="num">0</span>, <span class="num">1</span>].set_title(<span class="str">"Bar chart"</span>)
+
+axes[<span class="num">1</span>, <span class="num">0</span>].scatter([<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>], [<span class="num">2</span>,<span class="num">4</span>,<span class="num">3</span>])
+axes[<span class="num">1</span>, <span class="num">0</span>].set_title(<span class="str">"Scatter"</span>)
+
+axes[<span class="num">1</span>, <span class="num">1</span>].hist(np.random.randn(<span class="num">100</span>))
+axes[<span class="num">1</span>, <span class="num">1</span>].set_title(<span class="str">"Histogram"</span>)
+
+plt.suptitle(<span class="str">"Dashboard Overview"</span>, fontsize=<span class="num">16</span>, fontweight=<span class="str">"bold"</span>)
+plt.tight_layout()
+plt.show()</pre>
+    </div>
+
+    <h2 class="concept-title">5. Seaborn — Statistical Visualisation</h2>
+    <p>Seaborn wraps Matplotlib with a beautiful default theme and adds chart types tailored for statistical analysis — pair plots, violin plots, box plots, and heatmaps.</p>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">python</span><button class="copy-btn btn btn-ghost" style="padding:4px 10px;font-size:11px;">Copy</button></div>
+      <pre><span class="kw">import</span> seaborn <span class="kw">as</span> sns
+<span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+
+<span class="cm"># Set theme — whitegrid is clean for presentations</span>
+sns.set_theme(style=<span class="str">"whitegrid"</span>, palette=<span class="str">"muted"</span>)
+
+<span class="cm"># Load built-in dataset</span>
+tips = sns.load_dataset(<span class="str">"tips"</span>)
+
+<span class="cm"># Box plot — show distribution by category</span>
+sns.boxplot(data=tips, x=<span class="str">"day"</span>, y=<span class="str">"total_bill"</span>, palette=<span class="str">"Set2"</span>)
+plt.title(<span class="str">"Bill Distribution by Day"</span>)
+plt.show()
+
+<span class="cm"># Violin plot — combines boxplot + density</span>
+sns.violinplot(data=tips, x=<span class="str">"day"</span>, y=<span class="str">"total_bill"</span>, hue=<span class="str">"sex"</span>)
+plt.show()
+
+<span class="cm"># Pair plot — all pairwise relationships</span>
+iris = sns.load_dataset(<span class="str">"iris"</span>)
+sns.pairplot(iris, hue=<span class="str">"species"</span>)
+plt.show()
+
+<span class="cm"># Heatmap — correlations</span>
+corr = tips.select_dtypes(<span class="str">"number"</span>).corr()
+sns.heatmap(corr, annot=<span class="kw">True</span>, fmt=<span class="str">".2f"</span>, cmap=<span class="str">"coolwarm"</span>)
+plt.title(<span class="str">"Correlation Matrix"</span>)
+plt.show()
+
+<span class="cm"># Count plot — bar chart for categorical</span>
+sns.countplot(data=tips, x=<span class="str">"day"</span>, order=[<span class="str">"Thur"</span>,<span class="str">"Fri"</span>,<span class="str">"Sat"</span>,<span class="str">"Sun"</span>])
+
+<span class="cm"># Scatter with regression line</span>
+sns.regplot(data=tips, x=<span class="str">"total_bill"</span>, y=<span class="str">"tip"</span>)
+plt.show()</pre>
+    </div>
+
+    <h2 class="concept-title">6. Saving Figures</h2>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">python</span><button class="copy-btn btn btn-ghost" style="padding:4px 10px;font-size:11px;">Copy</button></div>
+      <pre><span class="cm"># Save in multiple formats</span>
+fig.savefig(<span class="str">"chart.png"</span>, dpi=<span class="num">300</span>, bbox_inches=<span class="str">"tight"</span>)   <span class="cm"># high-res PNG</span>
+fig.savefig(<span class="str">"chart.pdf"</span>, bbox_inches=<span class="str">"tight"</span>)             <span class="cm"># vector PDF</span>
+fig.savefig(<span class="str">"chart.svg"</span>)                                   <span class="cm"># SVG for web</span>
+
+<span class="cm"># Tip: always call savefig BEFORE plt.show()</span>
+<span class="cm"># plt.show() clears the figure buffer</span></pre>
+    </div>
+
+    <h2 class="concept-title">📚 Learning Resources</h2>
+    <div class="resource-grid">
+      <a href="https://www.youtube.com/playlist?list=PL-osiE80TeTvipOqomVEeZ1HRrcEvtZB_" class="resource-card" target="_blank">
+        <div class="r-icon r-yt">▶️</div>
+        <div class="r-text"><div class="r-title">sentdex — Matplotlib Tutorials</div><div class="r-sub">YouTube · Complete playlist</div></div>
+      </a>
+      <a href="https://seaborn.pydata.org/tutorial.html" class="resource-card" target="_blank">
+        <div class="r-icon r-doc">📄</div>
+        <div class="r-text"><div class="r-title">Seaborn Tutorial</div><div class="r-sub">seaborn.pydata.org · Official guide</div></div>
+      </a>
+      <a href="https://matplotlib.org/stable/gallery/" class="resource-card" target="_blank">
+        <div class="r-icon r-doc">📄</div>
+        <div class="r-text"><div class="r-title">Matplotlib Gallery</div><div class="r-sub">500+ chart examples with code</div></div>
+      </a>
+    </div>
+
+    <div class="page-nav">
+      <a href="03-pandas.html"><div class="pn-dir">← Previous</div><div class="pn-title">Pandas</div></a>
+      <a href="05-flask.html" class="next"><div class="pn-dir">Next →</div><div class="pn-title">Flask</div></a>
+    </div>
+  </div>
+</div>
+<script src="js/sidebar.js"></script><script src="js/main.js"></script>
+</body>
+</html>
