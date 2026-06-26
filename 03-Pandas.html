@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pandas — PyAnalyst</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="sidebar" id="sidebar"></div>
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-breadcrumb">Python Programming → <span>Pandas</span></div>
+    <div class="topbar-btns">
+      <a href="02-numpy.html" class="btn btn-ghost">← NumPy</a>
+      <a href="04-matplotlib.html" class="btn btn-primary">Next: Matplotlib →</a>
+    </div>
+  </div>
+  <div class="content">
+
+    <div class="topic-hero">
+      <div class="eyebrow">Topic 03 · Python Programming</div>
+      <h1>Pandas — Data Analysis Powerhouse</h1>
+      <p>Pandas is your most important tool as a data analyst. It provides the DataFrame — a table of data like Excel but programmable. You'll use it every single day to load, clean, transform, and summarise datasets.</p>
+      <div class="tags">
+        <span>DataFrame</span><span>Series</span><span>read_csv</span><span>loc/iloc</span><span>groupby</span><span>merge/join</span><span>pivot</span><span>apply</span><span>fillna</span><span>Datetime</span>
+      </div>
+    </div>
+
+    <div class="callout callout-info">
+      <div class="callout-icon">📦</div>
+      <div><div class="callout-title">Installation</div><p><code>pip install pandas</code> — then: <code>import pandas as pd</code></p></div>
+    </div>
+
+    <!-- 1. DataFrame & Series -->
+    <h2 class="concept-title">1. DataFrame &amp; Series</h2>
+    <p>A <strong>Series</strong> is a single column of data (like a list with labels). A <strong>DataFrame</strong> is a collection of Series — essentially a table with named rows and columns.</p>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">python</span><button class="copy-btn btn btn-ghost" style="padding:4px 10px;font-size:11px;">Copy</button></div>
+      <pre><span class="kw">import</span> pandas <span class="kw">as</span> pd
+
+<span class="cm"># Series — a single column</span>
+sales = pd.Series([<span class="num">1200</span>, <span class="num">3400</span>, <span class="num">2800</span>, <span class="num">5100</span>],
+                  index=[<span class="str">"Jan"</span>, <span class="str">"Feb"</span>, <span class="str">"Mar"</span>, <span class="str">"Apr"</span>])
+<span class="fn">print</span>(sales[<span class="str">"Feb"</span>])    <span class="cm"># 3400</span>
+<span class="fn">print</span>(sales.mean())    <span class="cm"># 3125.0</span>
+
+<span class="cm"># DataFrame — a table</span>
+df = pd.DataFrame({
+    <span class="str">"name"</span>:       [<span class="str">"Aisha"</span>, <span class="str">"Raj"</span>, <span class="str">"Priya"</span>, <span class="str">"Dev"</span>],
+    <span class="str">"department"</span>: [<span class="str">"Sales"</span>, <span class="str">"IT"</span>,    <span class="str">"HR"</span>,    <span class="str">"Sales"</span>],
+    <span class="str">"salary"</span>:     [<span class="num">55000</span>,  <span class="num">72000</span>, <span class="num">48000</span>,  <span class="num">61000</span>],
+    <span class="str">"experience"</span>: [<span class="num">3</span>,       <span class="num">5</span>,      <span class="num">2</span>,       <span class="num">4</span>]
+})
+
+<span class="fn">print</span>(df.shape)         <span class="cm"># (4, 4) — 4 rows, 4 columns</span>
+<span class="fn">print</span>(df.dtypes)        <span class="cm"># data type of each column</span>
+<span class="fn">print</span>(df.head(<span class="num">2</span>))       <span class="cm"># first 2 rows</span>
+<span class="fn">print</span>(df.tail(<span class="num">2</span>))       <span class="cm"># last 2 rows</span>
+<span class="fn">print</span>(df.info())        <span class="cm"># summary: types, null counts</span>
+<span class="fn">print</span>(df.describe())    <span class="cm"># stats: mean, std, min, max</span></pre>
+    </div>
+
+    <!-- 2. Reading Data -->
+    <h2 class="concept-title">2. Reading &amp; Writing Data</h2>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">python</span><button class="copy-btn btn btn-ghost" style="padding:4px 10px;font-size:11px;">Copy</button></div>
+      <pre><span class="cm"># Read CSV (most common)</span>
+df = pd.read_csv(<span class="str">"sales_data.csv"</span>)
+df = pd.read_csv(<span class="str">"data.csv"</span>, sep=<span class="str">";"</span>)          <span class="cm"># semicolon separator</span>
+df = pd.read_csv(<span class="str">"data.csv"</span>, index_col=<span class="str">"id"</span>)   <span class="cm"># set column as index</span>
+df = pd.read_csv(<span class="str">"data.csv"</span>, nrows=<span class="num">1000</span>)      <span class="cm"># read first 1000 rows</span>
+df = pd.read_csv(<span class="str">"data.csv"</span>, skiprows=<span class="num">2</span>)      <span class="cm"># skip header rows</span>
+df = pd.read_csv(<span class="str">"data.csv"</span>, na_values=[<span class="str">"N/A"</span>, <span class="str">"-"</span>, <span class="str">""</span>])
+
+<span class="cm"># Read Excel</span>
+df = pd.read_excel(<span class="str">"report.xlsx"</span>, sheet_name=<span class="str">"Sales"</span>)
+
+<span class="cm"># Read JSON</span>
+df = pd.read_json(<span class="str">"data.json"</span>)
+
+<span class="cm"># Write to file</span>
+df.to_csv(<span class="str">"output.csv"</span>, index=<span class="kw">False</span>)        <span class="cm"># no row numbers</span>
+df.to_excel(<span class="str">"report.xlsx"</span>, index=<span class="kw">False</span>)
+df.to_json(<span class="str">"data.json"</span>, orient=<span class="str">"records"</span>)</pre>
+    </div>
+
+    <!-- 3. loc & iloc -->
+    <h2 class="concept-title">3. Selecting Data — loc &amp; iloc</h2>
+    <p><code>loc</code> selects by <strong>label</strong> (column name, index name). <code>iloc</code> selects by <strong>position</strong> (integer index, like a list). This distinction trips up every beginner — master it early.</p>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">python</span><button class="copy-btn btn btn-ghost" style="padding:4px 10px;font-size:11px;">Copy</button></div>
+      <pre><span class="cm"># Select a single column → returns Series</span>
+df[<span class="str">"salary"</span>]
+df.salary         <span class="cm"># same, but avoid if column name has spaces</span>
+
+<span class="cm"># Select multiple columns → returns DataFrame</span>
+df[[<span class="str">"name"</span>, <span class="str">"salary"</span>]]
+
+<span class="cm"># loc — label-based [rows, columns]</span>
+df.loc[<span class="num">0</span>, <span class="str">"name"</span>]            <span class="cm"># "Aisha" — row 0, column "name"</span>
+df.loc[<span class="num">0</span>:<span class="num">2</span>, <span class="str">"name"</span>:<span class="str">"salary"</span>]  <span class="cm"># rows 0-2, cols name to salary</span>
+df.loc[:, <span class="str">"salary"</span>]           <span class="cm"># all rows, salary column</span>
+
+<span class="cm"># loc with boolean condition</span>
+df.loc[df[<span class="str">"salary"</span>] &gt; <span class="num">55000</span>]
+df.loc[df[<span class="str">"department"</span>] == <span class="str">"Sales"</span>]
+df.loc[(df[<span class="str">"salary"</span>] &gt; <span class="num">50000</span>) &amp; (df[<span class="str">"experience"</span>] &gt;= <span class="num">3</span>)]
+
+<span class="cm"># iloc — integer position [rows, columns]</span>
+df.iloc[<span class="num">0</span>]              <span class="cm"># first row</span>
+df.iloc[<span class="num">0</span>, <span class="num">2</span>]           <span class="cm"># row 0, column index 2</span>
+df.iloc[<span class="num">1</span>:<span class="num">3</span>, <span class="num">0</span>:<span class="num">2</span>]       <span class="cm"># rows 1-2, first 2 columns</span>
+df.iloc[-<span class="num">1</span>]             <span class="cm"># last row</span>
+df.iloc[:, -<span class="num">1</span>]          <span class="cm"># last column</span></pre>
+    </div>
+
+    <!-- 4. Data Cleaning -->
+    <h2 class="concept-title">4. Data Cleaning — Missing Values</h2>
+    <p>Real datasets are always messy. Handling nulls (NaN) is one of the most frequent tasks.</p>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">python</span><button class="copy-btn btn btn-ghost" style="padding:4px 10px;font-size:11px;">Copy</button></div>
+      <pre><span class="cm"># Detect nulls</span>
+df.isnull()              <span class="cm"># True/False for each cell</span>
+df.isnull().sum()        <span class="cm"># count nulls per column</span>
+df.isnull().sum() / <span class="fn">len</span>(df) * <span class="num">100</span>   <span class="cm"># % null per column</span>
+
+<span class="cm"># Drop rows/columns with nulls</span>
+df.dropna()                           <span class="cm"># drop any row with ANY null</span>
+df.dropna(subset=[<span class="str">"salary"</span>])         <span class="cm"># drop only if salary is null</span>
+df.dropna(how=<span class="str">"all"</span>)                 <span class="cm"># drop only if ALL columns null</span>
+df.dropna(thresh=<span class="num">3</span>)                  <span class="cm"># keep rows with ≥ 3 non-nulls</span>
+
+<span class="cm"># Fill nulls</span>
+df[<span class="str">"salary"</span>].fillna(<span class="num">0</span>)               <span class="cm"># replace with 0</span>
+df[<span class="str">"salary"</span>].fillna(df[<span class="str">"salary"</span>].mean())  <span class="cm"># replace with mean</span>
+df[<span class="str">"city"</span>].fillna(<span class="str">"Unknown"</span>)         <span class="cm"># replace with string</span>
+df[<span class="str">"salary"</span>].fillna(method=<span class="str">"ffill"</span>)  <span class="cm"># forward fill</span>
+df[<span class="str">"salary"</span>].fillna(method=<span class="str">"bfill"</span>)  <span class="cm"># backward fill</span>
+
+<span class="cm"># Remove duplicates</span>
+df.duplicated()                       <span class="cm"># True if row is duplicate</span>
+df.drop_duplicates()                  <span class="cm"># remove duplicates</span>
+df.drop_duplicates(subset=[<span class="str">"name"</span>])  <span class="cm"># duplicate by specific column</span></pre>
+    </div>
+
+    <!-- 5. groupby -->
+    <h2 class="concept-title">5. GroupBy — Aggregate by Category</h2>
+    <p>GroupBy is the pandas equivalent of SQL's GROUP BY or Excel's PivotTable. It splits data into groups, applies a function, and combines the results.</p>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">python</span><button class="copy-btn btn btn-ghost" style="padding:4px 10px;font-size:11px;">Copy</button></div>
+      <pre><span class="cm"># Average salary by department</span>
+df.groupby(<span class="str">"department"</span>)[<span class="str">"salary"</span>].mean()
+
+<span class="cm"># Multiple aggregations at once</span>
+df.groupby(<span class="str">"department"</span>).agg(
+    avg_salary=(<span class="str">"salary"</span>, <span class="str">"mean"</span>),
+    max_salary=(<span class="str">"salary"</span>, <span class="str">"max"</span>),
+    headcount=(<span class="str">"name"</span>, <span class="str">"count"</span>)
+)
+
+<span class="cm"># Group by multiple columns</span>
+df.groupby([<span class="str">"department"</span>, <span class="str">"city"</span>])[<span class="str">"salary"</span>].mean()
+
+<span class="cm"># transform — keep original shape (add column)</span>
+df[<span class="str">"dept_avg_salary"</span>] = df.groupby(<span class="str">"department"</span>)[<span class="str">"salary"</span>].transform(<span class="str">"mean"</span>)
+
+<span class="cm"># Salary above department average?</span>
+df[<span class="str">"above_avg"</span>] = df[<span class="str">"salary"</span>] &gt; df[<span class="str">"dept_avg_salary"</span>]
+
+<span class="cm"># value_counts — count occurrences</span>
+df[<span class="str">"department"</span>].value_counts()
+df[<span class="str">"department"</span>].value_counts(normalize=<span class="kw">True</span>)  <span class="cm"># as proportions</span></pre>
+    </div>
+
+    <!-- 6. Merge & Join -->
+    <h2 class="concept-title">6. Merge &amp; Join</h2>
+    <p>Combine multiple DataFrames — equivalent to SQL JOINs. This is essential when your data lives in multiple tables (employees, departments, sales records).</p>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">python</span><button class="copy-btn btn btn-ghost" style="padding:4px 10px;font-size:11px;">Copy</button></div>
+      <pre>employees = pd.DataFrame({
+    <span class="str">"emp_id"</span>: [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>],
+    <span class="str">"name"</span>:   [<span class="str">"Aisha"</span>, <span class="str">"Raj"</span>, <span class="str">"Priya"</span>, <span class="str">"Dev"</span>],
+    <span class="str">"dept_id"</span>: [<span class="num">10</span>, <span class="num">20</span>, <span class="num">10</span>, <span class="num">30</span>]
+})
+
+departments = pd.DataFrame({
+    <span class="str">"dept_id"</span>: [<span class="num">10</span>, <span class="num">20</span>, <span class="num">30</span>],
+    <span class="str">"dept_name"</span>: [<span class="str">"Sales"</span>, <span class="str">"IT"</span>, <span class="str">"HR"</span>]
+})
+
+<span class="cm"># Inner join — only matching rows</span>
+merged = pd.merge(employees, departments, on=<span class="str">"dept_id"</span>, how=<span class="str">"inner"</span>)
+
+<span class="cm"># Left join — all rows from left, match from right</span>
+merged = pd.merge(employees, departments, on=<span class="str">"dept_id"</span>, how=<span class="str">"left"</span>)
+
+<span class="cm"># Different column names in each table</span>
+pd.merge(df1, df2, left_on=<span class="str">"employee_id"</span>, right_on=<span class="str">"id"</span>)
+
+<span class="cm"># Concatenate — stack DataFrames</span>
+q1 = pd.DataFrame({<span class="str">"month"</span>: [<span class="str">"Jan"</span>,<span class="str">"Feb"</span>], <span class="str">"sales"</span>: [<span class="num">1000</span>, <span class="num">1200</span>]})
+q2 = pd.DataFrame({<span class="str">"month"</span>: [<span class="str">"Apr"</span>,<span class="str">"May"</span>], <span class="str">"sales"</span>: [<span class="num">1400</span>, <span class="num">1100</span>]})
+full_year = pd.concat([q1, q2], ignore_index=<span class="kw">True</span>)</pre>
+    </div>
+
+    <!-- 7. apply & map -->
+    <h2 class="concept-title">7. apply &amp; map — Custom Transformations</h2>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">python</span><button class="copy-btn btn btn-ghost" style="padding:4px 10px;font-size:11px;">Copy</button></div>
+      <pre><span class="cm"># apply — run a function on each value</span>
+df[<span class="str">"salary_inr"</span>] = df[<span class="str">"salary"</span>].apply(<span class="kw">lambda</span> x: <span class="fn">f</span><span class="str">"₹{x:,}"</span>)
+
+<span class="cm"># apply with a custom function</span>
+<span class="kw">def</span> <span class="fn">grade</span>(score):
+    <span class="kw">if</span> score &gt;= <span class="num">90</span>: <span class="kw">return</span> <span class="str">"A"</span>
+    <span class="kw">elif</span> score &gt;= <span class="num">75</span>: <span class="kw">return</span> <span class="str">"B"</span>
+    <span class="kw">elif</span> score &gt;= <span class="num">60</span>: <span class="kw">return</span> <span class="str">"C"</span>
+    <span class="kw">else</span>: <span class="kw">return</span> <span class="str">"F"</span>
+
+df[<span class="str">"grade"</span>] = df[<span class="str">"score"</span>].apply(<span class="fn">grade</span>)
+
+<span class="cm"># apply across rows (axis=1)</span>
+df[<span class="str">"full_label"</span>] = df.apply(
+    <span class="kw">lambda</span> row: <span class="fn">f</span><span class="str">"{row['name']} ({row['department']})"</span>, axis=<span class="num">1</span>
+)
+
+<span class="cm"># map — replace values using a dict</span>
+df[<span class="str">"dept_code"</span>] = df[<span class="str">"department"</span>].map({
+    <span class="str">"Sales"</span>: <span class="str">"SL"</span>, <span class="str">"IT"</span>: <span class="str">"IT"</span>, <span class="str">"HR"</span>: <span class="str">"HR"</span>
+})
+
+<span class="cm"># String methods — .str accessor</span>
+df[<span class="str">"name"</span>].str.upper()
+df[<span class="str">"name"</span>].str.strip()
+df[<span class="str">"email"</span>].str.contains(<span class="str">"@gmail"</span>)
+df[<span class="str">"name"</span>].str.replace(<span class="str">"  "</span>, <span class="str">" "</span>)</pre>
+    </div>
+
+    <!-- 8. Pivot Table -->
+    <h2 class="concept-title">8. Pivot Table</h2>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">python</span><button class="copy-btn btn btn-ghost" style="padding:4px 10px;font-size:11px;">Copy</button></div>
+      <pre>sales_data = pd.DataFrame({
+    <span class="str">"region"</span>:  [<span class="str">"North"</span>, <span class="str">"South"</span>, <span class="str">"North"</span>, <span class="str">"South"</span>],
+    <span class="str">"product"</span>: [<span class="str">"Laptop"</span>, <span class="str">"Laptop"</span>, <span class="str">"Phone"</span>, <span class="str">"Phone"</span>],
+    <span class="str">"sales"</span>:   [<span class="num">5000</span>, <span class="num">3000</span>, <span class="num">2000</span>, <span class="num">4500</span>]
+})
+
+pivot = sales_data.pivot_table(
+    values=<span class="str">"sales"</span>,       <span class="cm"># what to aggregate</span>
+    index=<span class="str">"region"</span>,       <span class="cm"># rows</span>
+    columns=<span class="str">"product"</span>,    <span class="cm"># columns</span>
+    aggfunc=<span class="str">"sum"</span>,         <span class="cm"># function: sum, mean, count</span>
+    fill_value=<span class="num">0</span>           <span class="cm"># replace NaN with 0</span>
+)
+<span class="fn">print</span>(pivot)
+<span class="cm"># product   Laptop  Phone
+# region
+# North       5000   2000
+# South       3000   4500</span></pre>
+    </div>
+
+    <!-- Resources -->
+    <h2 class="concept-title">📚 Learning Resources</h2>
+    <div class="resource-grid">
+      <a href="https://www.youtube.com/playlist?list=PL-osiE80TeTsWmV9i9c58mdDCSskIFdDS" class="resource-card" target="_blank">
+        <div class="r-icon r-yt">▶️</div>
+        <div class="r-text"><div class="r-title">Corey Schafer — Pandas Series</div><div class="r-sub">YouTube · 10-part complete series</div></div>
+      </a>
+      <a href="https://pandas.pydata.org/docs/user_guide/index.html" class="resource-card" target="_blank">
+        <div class="r-icon r-doc">📄</div>
+        <div class="r-text"><div class="r-title">Pandas User Guide</div><div class="r-sub">pandas.pydata.org · Official docs</div></div>
+      </a>
+      <a href="https://www.kaggle.com/learn/pandas" class="resource-card" target="_blank">
+        <div class="r-icon r-art">🎓</div>
+        <div class="r-text"><div class="r-title">Kaggle Pandas Course</div><div class="r-sub">Free · Exercises with real datasets</div></div>
+      </a>
+    </div>
+
+    <div class="callout callout-tip">
+      <div class="callout-icon">🎯</div>
+      <div><div class="callout-title">Practice project</div><p>Download the Titanic dataset from Kaggle. Load it, check for nulls, fill/drop appropriately, calculate survival rate by gender and class using groupby, and merge with a passenger class description table. This single project covers 90% of what you'll do daily.</p></div>
+    </div>
+
+    <div class="page-nav">
+      <a href="02-numpy.html"><div class="pn-dir">← Previous</div><div class="pn-title">NumPy</div></a>
+      <a href="04-matplotlib.html" class="next"><div class="pn-dir">Next →</div><div class="pn-title">Matplotlib &amp; Seaborn</div></a>
+    </div>
+  </div>
+</div>
+<script src="js/sidebar.js"></script><script src="js/main.js"></script>
+</body>
+</html>
