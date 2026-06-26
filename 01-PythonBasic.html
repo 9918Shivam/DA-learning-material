@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python Basics — PyAnalyst</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="sidebar" id="sidebar"></div>
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-breadcrumb">Python Programming → <span>Python Basics</span></div>
+    <div class="topbar-btns">
+      <a href="index.html" class="btn btn-ghost">← Home</a>
+      <a href="02-numpy.html" class="btn btn-primary">Next: NumPy →</a>
+    </div>
+  </div>
+  <div class="content">
+
+    <div class="topic-hero">
+      <div class="eyebrow">Topic 01 · Python Programming</div>
+      <h1>Python Basics</h1>
+      <p>Master the core building blocks of Python — variables, loops, functions, file handling, and error management. Everything you learn here underpins every other topic in this course.</p>
+      <div class="tags">
+        <span>Variables</span><span>Data Types</span><span>Loops</span><span>Functions</span><span>File I/O</span><span>Error Handling</span><span>Modules</span><span>List Comprehensions</span>
+      </div>
+    </div>
+
+    <!-- 1. Variables & Data Types -->
+    <h2 class="concept-title">1. Variables &amp; Data Types</h2>
+    <p>A <strong>variable</strong> is a named container that stores a value. Python is dynamically typed — you don't declare the type; Python infers it automatically.</p>
+
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">python</span><button class="copy-btn btn btn-ghost" style="padding:4px 10px;font-size:11px;">Copy</button></div>
+      <pre><span class="cm"># Integers — whole numbers</span>
+age = <span class="num">25</span>
+year = <span class="num">2024</span>
+
+<span class="cm"># Floats — decimal numbers</span>
+salary = <span class="num">45000.50</span>
+pi = <span class="num">3.14159</span>
+
+<span class="cm"># Strings — text</span>
+name = <span class="str">"Priya Sharma"</span>
+city = <span class="str">'Lucknow'</span>
+
+<span class="cm"># Booleans — True or False</span>
+is_analyst = <span class="kw">True</span>
+is_manager = <span class="kw">False</span>
+
+<span class="cm"># NoneType — absence of value</span>
+bonus = <span class="kw">None</span>
+
+<span class="cm"># Check the type of any variable</span>
+<span class="fn">print</span>(<span class="fn">type</span>(salary))   <span class="cm"># &lt;class 'float'&gt;</span>
+<span class="fn">print</span>(<span class="fn">type</span>(name))     <span class="cm"># &lt;class 'str'&gt;</span></pre>
+    </div>
+
+    <h3 class="sub-title">Type Conversion</h3>
+    <p>Convert between types using built-in functions: <code>int()</code>, <code>float()</code>, <code>str()</code>, <code>bool()</code>.</p>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">python</span><button class="copy-btn btn btn-ghost" style="padding:4px 10px;font-size:11px;">Copy</button></div>
+      <pre>revenue_str = <span class="str">"15000"</span>
+revenue_int = <span class="fn">int</span>(revenue_str)   <span class="cm"># "15000" → 15000</span>
+revenue_flt = <span class="fn">float</span>(revenue_str) <span class="cm"># "15000" → 15000.0</span>
+
+score = <span class="num">0</span>
+<span class="fn">print</span>(<span class="fn">bool</span>(score))  <span class="cm"># False — 0 is falsy</span>
+<span class="fn">print</span>(<span class="fn">bool</span>(<span class="num">5</span>))      <span class="cm"># True — any non-zero is truthy</span></pre>
+    </div>
+
+    <!-- 2. Collections -->
+    <h2 class="concept-title">2. Collections — Lists, Tuples, Dicts, Sets</h2>
+
+    <h3 class="sub-title">Lists — ordered, mutable</h3>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">python</span><button class="copy-btn btn btn-ghost" style="padding:4px 10px;font-size:11px;">Copy</button></div>
+      <pre>sales = [<span class="num">1200</span>, <span class="num">3400</span>, <span class="num">2800</span>, <span class="num">5100</span>, <span class="num">4200</span>]
+
+<span class="cm"># Indexing (0-based)</span>
+<span class="fn">print</span>(sales[<span class="num">0</span>])    <span class="cm"># 1200 — first element</span>
+<span class="fn">print</span>(sales[-<span class="num">1</span>])   <span class="cm"># 4200 — last element</span>
+
+<span class="cm"># Slicing [start:stop:step]</span>
+<span class="fn">print</span>(sales[<span class="num">1</span>:<span class="num">4</span>])   <span class="cm"># [3400, 2800, 5100]</span>
+<span class="fn">print</span>(sales[::<span class="num">2</span>])   <span class="cm"># [1200, 2800, 4200] — every other</span>
+
+<span class="cm"># Modifying</span>
+sales.append(<span class="num">6000</span>)       <span class="cm"># add to end</span>
+sales.insert(<span class="num">0</span>, <span class="num">900</span>)     <span class="cm"># insert at index 0</span>
+sales.remove(<span class="num">3400</span>)       <span class="cm"># remove first occurrence</span>
+popped = sales.pop()      <span class="cm"># remove & return last</span>
+
+<span class="cm"># Useful methods</span>
+<span class="fn">print</span>(<span class="fn">len</span>(sales))         <span class="cm"># number of items</span>
+<span class="fn">print</span>(<span class="fn">sum</span>(sales))         <span class="cm"># total</span>
+<span class="fn">print</span>(<span class="fn">max</span>(sales))         <span class="cm"># highest value</span>
+<span class="fn">print</span>(<span class="fn">sorted</span>(sales))      <span class="cm"># returns new sorted list</span></pre>
+    </div>
+
+    <h3 class="sub-title">Dictionaries — key-value pairs</h3>
+    <p>Dictionaries are the most important data structure for data analysts — JSON responses, config data, and row records all look like dicts.</p>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">python</span><button class="copy-btn btn btn-ghost" style="padding:4px 10px;font-size:11px;">Copy</button></div>
+      <pre>employee = {
+    <span class="str">"name"</span>: <span class="str">"Rahul"</span>,
+    <span class="str">"age"</span>: <span class="num">28</span>,
+    <span class="str">"department"</span>: <span class="str">"Analytics"</span>,
+    <span class="str">"salary"</span>: <span class="num">72000</span>
+}
+
+<span class="cm"># Access</span>
+<span class="fn">print</span>(employee[<span class="str">"name"</span>])              <span class="cm"># Rahul</span>
+<span class="fn">print</span>(employee.get(<span class="str">"bonus"</span>, <span class="num">0</span>))      <span class="cm"># 0 — safe access, no KeyError</span>
+
+<span class="cm"># Add / update</span>
+employee[<span class="str">"city"</span>] = <span class="str">"Lucknow"</span>
+employee[<span class="str">"salary"</span>] = <span class="num">78000</span>
+
+<span class="cm"># Iterate</span>
+<span class="kw">for</span> key, value <span class="kw">in</span> employee.items():
+    <span class="fn">print</span>(<span class="fn">f</span><span class="str">"{key}: {value}"</span>)
+
+<span class="cm"># All keys / values</span>
+<span class="fn">print</span>(employee.keys())
+<span class="fn">print</span>(employee.values())</pre>
+    </div>
+
+    <!-- 3. Loops -->
+    <h2 class="concept-title">3. Loops — for &amp; while</h2>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">python</span><button class="copy-btn btn btn-ghost" style="padding:4px 10px;font-size:11px;">Copy</button></div>
+      <pre><span class="cm"># for loop — iterate over a sequence</span>
+months = [<span class="str">"Jan"</span>, <span class="str">"Feb"</span>, <span class="str">"Mar"</span>]
+<span class="kw">for</span> month <span class="kw">in</span> months:
+    <span class="fn">print</span>(<span class="fn">f</span><span class="str">"Processing: {month}"</span>)
+
+<span class="cm"># range() — generate a sequence of numbers</span>
+<span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="num">1</span>, <span class="num">6</span>):          <span class="cm"># 1, 2, 3, 4, 5</span>
+    <span class="fn">print</span>(<span class="fn">f</span><span class="str">"Week {i}"</span>)
+
+<span class="cm"># enumerate — get index + value together</span>
+products = [<span class="str">"Laptop"</span>, <span class="str">"Phone"</span>, <span class="str">"Tablet"</span>]
+<span class="kw">for</span> idx, product <span class="kw">in</span> <span class="fn">enumerate</span>(products, start=<span class="num">1</span>):
+    <span class="fn">print</span>(<span class="fn">f</span><span class="str">"{idx}. {product}"</span>)
+
+<span class="cm"># while loop — repeat while condition is True</span>
+count = <span class="num">0</span>
+<span class="kw">while</span> count &lt; <span class="num">5</span>:
+    <span class="fn">print</span>(<span class="fn">f</span><span class="str">"Count: {count}"</span>)
+    count += <span class="num">1</span>
+
+<span class="cm"># break / continue</span>
+<span class="kw">for</span> num <span class="kw">in</span> <span class="fn">range</span>(<span class="num">10</span>):
+    <span class="kw">if</span> num == <span class="num">3</span>: <span class="kw">continue</span>   <span class="cm"># skip 3</span>
+    <span class="kw">if</span> num == <span class="num">7</span>: <span class="kw">break</span>     <span class="cm"># stop at 7</span>
+    <span class="fn">print</span>(num)</pre>
+    </div>
+
+    <!-- 4. Functions -->
+    <h2 class="concept-title">4. Functions</h2>
+    <p>Functions let you group reusable logic. In data analysis, you'll write functions to clean columns, calculate KPIs, and transform data.</p>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">python</span><button class="copy-btn btn btn-ghost" style="padding:4px 10px;font-size:11px;">Copy</button></div>
+      <pre><span class="cm"># Basic function</span>
+<span class="kw">def</span> <span class="fn">greet</span>(name):
+    <span class="kw">return</span> <span class="fn">f</span><span class="str">"Hello, {name}!"</span>
+
+<span class="fn">print</span>(<span class="fn">greet</span>(<span class="str">"Anjali"</span>))   <span class="cm"># Hello, Anjali!</span>
+
+<span class="cm"># Default arguments</span>
+<span class="kw">def</span> <span class="fn">calculate_tax</span>(income, rate=<span class="num">0.30</span>):
+    <span class="kw">return</span> income * rate
+
+<span class="fn">print</span>(<span class="fn">calculate_tax</span>(<span class="num">100000</span>))        <span class="cm"># 30000.0 (uses default rate)</span>
+<span class="fn">print</span>(<span class="fn">calculate_tax</span>(<span class="num">100000</span>, <span class="num">0.20</span>))  <span class="cm"># 20000.0</span>
+
+<span class="cm"># *args — variable number of positional arguments</span>
+<span class="kw">def</span> <span class="fn">total_sales</span>(*amounts):
+    <span class="kw">return</span> <span class="fn">sum</span>(amounts)
+
+<span class="fn">print</span>(<span class="fn">total_sales</span>(<span class="num">100</span>, <span class="num">200</span>, <span class="num">300</span>))   <span class="cm"># 600</span>
+
+<span class="cm"># **kwargs — variable keyword arguments</span>
+<span class="kw">def</span> <span class="fn">display_info</span>(**info):
+    <span class="kw">for</span> k, v <span class="kw">in</span> info.items():
+        <span class="fn">print</span>(<span class="fn">f</span><span class="str">"  {k}: {v}"</span>)
+
+<span class="fn">display_info</span>(name=<span class="str">"Riya"</span>, role=<span class="str">"Analyst"</span>, city=<span class="str">"Delhi"</span>)
+
+<span class="cm"># Lambda — anonymous one-line functions</span>
+double = <span class="kw">lambda</span> x: x * <span class="num">2</span>
+<span class="fn">print</span>(<span class="fn">double</span>(<span class="num">7</span>))   <span class="cm"># 14</span>
+
+<span class="cm"># Often used with map() and filter()</span>
+nums = [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>, <span class="num">5</span>]
+evens = <span class="fn">list</span>(<span class="fn">filter</span>(<span class="kw">lambda</span> x: x % <span class="num">2</span> == <span class="num">0</span>, nums))   <span class="cm"># [2, 4]</span>
+doubled = <span class="fn">list</span>(<span class="fn">map</span>(<span class="kw">lambda</span> x: x * <span class="num">2</span>, nums))           <span class="cm"># [2,4,6,8,10]</span></pre>
+    </div>
+
+    <!-- 5. List Comprehensions -->
+    <h2 class="concept-title">5. List Comprehensions</h2>
+    <p>A concise, Pythonic way to build lists. You'll use these constantly in data analysis to transform or filter collections in one line.</p>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">python</span><button class="copy-btn btn btn-ghost" style="padding:4px 10px;font-size:11px;">Copy</button></div>
+      <pre><span class="cm"># Syntax: [expression for item in iterable if condition]</span>
+
+<span class="cm"># Basic — square every number</span>
+squares = [x**<span class="num">2</span> <span class="kw">for</span> x <span class="kw">in</span> <span class="fn">range</span>(<span class="num">1</span>, <span class="num">6</span>)]
+<span class="fn">print</span>(squares)   <span class="cm"># [1, 4, 9, 16, 25]</span>
+
+<span class="cm"># With condition — only even numbers</span>
+evens = [x <span class="kw">for</span> x <span class="kw">in</span> <span class="fn">range</span>(<span class="num">10</span>) <span class="kw">if</span> x % <span class="num">2</span> == <span class="num">0</span>]
+<span class="fn">print</span>(evens)   <span class="cm"># [0, 2, 4, 6, 8]</span>
+
+<span class="cm"># Real example: extract city names from a list of dicts</span>
+employees = [
+    {<span class="str">"name"</span>: <span class="str">"Neha"</span>, <span class="str">"city"</span>: <span class="str">"Mumbai"</span>},
+    {<span class="str">"name"</span>: <span class="str">"Raj"</span>,  <span class="str">"city"</span>: <span class="str">"Delhi"</span>},
+    {<span class="str">"name"</span>: <span class="str">"Mia"</span>,  <span class="str">"city"</span>: <span class="str">"Mumbai"</span>}
+]
+mumbai_staff = [e[<span class="str">"name"</span>] <span class="kw">for</span> e <span class="kw">in</span> employees <span class="kw">if</span> e[<span class="str">"city"</span>] == <span class="str">"Mumbai"</span>]
+<span class="fn">print</span>(mumbai_staff)   <span class="cm"># ['Neha', 'Mia']</span>
+
+<span class="cm"># Dict comprehension</span>
+prices = {<span class="str">"Apple"</span>: <span class="num">100</span>, <span class="str">"Mango"</span>: <span class="num">60</span>, <span class="str">"Banana"</span>: <span class="num">20</span>}
+discounted = {k: v * <span class="num">0.9</span> <span class="kw">for</span> k, v <span class="kw">in</span> prices.items()}
+<span class="fn">print</span>(discounted)   <span class="cm"># {'Apple': 90.0, 'Mango': 54.0, 'Banana': 18.0}</span></pre>
+    </div>
+
+    <!-- 6. File I/O -->
+    <h2 class="concept-title">6. File I/O — Reading &amp; Writing Files</h2>
+    <p>As a data analyst, you'll constantly read CSVs, write output files, and process text data. Python makes this simple with built-in file handling.</p>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">python</span><button class="copy-btn btn btn-ghost" style="padding:4px 10px;font-size:11px;">Copy</button></div>
+      <pre><span class="cm"># Write to a file</span>
+<span class="kw">with</span> <span class="fn">open</span>(<span class="str">"report.txt"</span>, <span class="str">"w"</span>) <span class="kw">as</span> f:
+    f.write(<span class="str">"Sales Report\n"</span>)
+    f.write(<span class="str">"Total: ₹45,000\n"</span>)
+
+<span class="cm"># Read entire file</span>
+<span class="kw">with</span> <span class="fn">open</span>(<span class="str">"report.txt"</span>, <span class="str">"r"</span>) <span class="kw">as</span> f:
+    content = f.read()
+    <span class="fn">print</span>(content)
+
+<span class="cm"># Read line by line (memory-efficient for large files)</span>
+<span class="kw">with</span> <span class="fn">open</span>(<span class="str">"report.txt"</span>, <span class="str">"r"</span>) <span class="kw">as</span> f:
+    <span class="kw">for</span> line <span class="kw">in</span> f:
+        <span class="fn">print</span>(line.strip())
+
+<span class="cm"># Append to existing file</span>
+<span class="kw">with</span> <span class="fn">open</span>(<span class="str">"report.txt"</span>, <span class="str">"a"</span>) <span class="kw">as</span> f:
+    f.write(<span class="str">"Updated: 2024-01-15\n"</span>)
+
+<span class="cm"># Read a CSV manually (before learning pandas)</span>
+<span class="kw">import</span> csv
+<span class="kw">with</span> <span class="fn">open</span>(<span class="str">"sales.csv"</span>, <span class="str">"r"</span>) <span class="kw">as</span> f:
+    reader = csv.DictReader(f)
+    <span class="kw">for</span> row <span class="kw">in</span> reader:
+        <span class="fn">print</span>(row[<span class="str">"product"</span>], row[<span class="str">"amount"</span>])</pre>
+    </div>
+    <div class="callout callout-tip">
+      <div class="callout-icon">💡</div>
+      <div><div class="callout-title">Always use <code>with</code> statements</div><p>The <code>with open(...) as f:</code> pattern automatically closes the file even if an error occurs. Never use <code>f = open(...)</code> without a matching <code>f.close()</code>.</p></div>
+    </div>
+
+    <!-- 7. Error Handling -->
+    <h2 class="concept-title">7. Error Handling — try / except</h2>
+    <p>Real-world data is messy. Files are missing, values are null, formats are wrong. Error handling lets your code respond gracefully instead of crashing.</p>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">python</span><button class="copy-btn btn btn-ghost" style="padding:4px 10px;font-size:11px;">Copy</button></div>
+      <pre><span class="cm"># Basic try/except</span>
+<span class="kw">try</span>:
+    result = <span class="num">100</span> / <span class="num">0</span>
+<span class="kw">except</span> ZeroDivisionError:
+    <span class="fn">print</span>(<span class="str">"Cannot divide by zero!"</span>)
+
+<span class="cm"># Multiple exception types</span>
+<span class="kw">def</span> <span class="fn">safe_convert</span>(value):
+    <span class="kw">try</span>:
+        <span class="kw">return</span> <span class="fn">int</span>(value)
+    <span class="kw">except</span> ValueError:
+        <span class="fn">print</span>(<span class="fn">f</span><span class="str">"'{value}' is not a valid number"</span>)
+        <span class="kw">return</span> <span class="kw">None</span>
+    <span class="kw">except</span> TypeError:
+        <span class="fn">print</span>(<span class="str">"Input cannot be None"</span>)
+        <span class="kw">return</span> <span class="kw">None</span>
+
+<span class="fn">print</span>(<span class="fn">safe_convert</span>(<span class="str">"abc"</span>))   <span class="cm"># 'abc' is not a valid number → None</span>
+<span class="fn">print</span>(<span class="fn">safe_convert</span>(<span class="str">"42"</span>))    <span class="cm"># 42</span>
+
+<span class="cm"># else — runs if no exception occurred</span>
+<span class="cm"># finally — always runs (cleanup)</span>
+<span class="kw">try</span>:
+    f = <span class="fn">open</span>(<span class="str">"data.csv"</span>)
+    data = f.read()
+<span class="kw">except</span> FileNotFoundError:
+    <span class="fn">print</span>(<span class="str">"File not found — check the path"</span>)
+<span class="kw">else</span>:
+    <span class="fn">print</span>(<span class="str">"File read successfully"</span>)
+<span class="kw">finally</span>:
+    <span class="fn">print</span>(<span class="str">"Attempt complete"</span>)   <span class="cm"># always runs</span></pre>
+    </div>
+
+    <!-- 8. Modules -->
+    <h2 class="concept-title">8. Modules &amp; Imports</h2>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">python</span><button class="copy-btn btn btn-ghost" style="padding:4px 10px;font-size:11px;">Copy</button></div>
+      <pre><span class="cm"># Standard library modules</span>
+<span class="kw">import</span> math
+<span class="fn">print</span>(math.sqrt(<span class="num">144</span>))       <span class="cm"># 12.0</span>
+<span class="fn">print</span>(math.ceil(<span class="num">4.2</span>))        <span class="cm"># 5</span>
+
+<span class="kw">import</span> random
+<span class="fn">print</span>(random.randint(<span class="num">1</span>, <span class="num">100</span>))   <span class="cm"># random integer 1–100</span>
+<span class="fn">print</span>(random.choice([<span class="str">"A"</span>, <span class="str">"B"</span>, <span class="str">"C"</span>]))
+
+<span class="kw">from</span> datetime <span class="kw">import</span> datetime, date
+today = date.today()
+<span class="fn">print</span>(today)                  <span class="cm"># 2024-01-15</span>
+<span class="fn">print</span>(today.strftime(<span class="str">"%d %B %Y"</span>))  <span class="cm"># 15 January 2024</span>
+
+<span class="cm"># Third-party (install with: pip install numpy pandas)</span>
+<span class="kw">import</span> numpy <span class="kw">as</span> np        <span class="cm"># alias 'np' is convention</span>
+<span class="kw">import</span> pandas <span class="kw">as</span> pd       <span class="cm"># alias 'pd' is convention</span>
+
+<span class="cm"># Import specific function</span>
+<span class="kw">from</span> os.path <span class="kw">import</span> exists, join
+<span class="kw">if</span> <span class="fn">exists</span>(<span class="str">"data.csv"</span>):
+    <span class="fn">print</span>(<span class="str">"File found!"</span>)</pre>
+    </div>
+
+    <!-- Resources -->
+    <h2 class="concept-title">📚 Learning Resources</h2>
+    <div class="resource-grid">
+      <a href="https://www.youtube.com/playlist?list=PL-osiE80TeTt2d9bfVyTiXJA-UTHn6WwU" class="resource-card" target="_blank">
+        <div class="r-icon r-yt">▶️</div>
+        <div class="r-text"><div class="r-title">Corey Schafer — Python Beginners</div><div class="r-sub">YouTube · 9-part playlist</div></div>
+      </a>
+      <a href="https://www.youtube.com/c/CSDojo" class="resource-card" target="_blank">
+        <div class="r-icon r-yt">▶️</div>
+        <div class="r-text"><div class="r-title">CS Dojo — Python for Beginners</div><div class="r-sub">YouTube · Great for absolute starters</div></div>
+      </a>
+      <a href="https://docs.python.org/3/tutorial/" class="resource-card" target="_blank">
+        <div class="r-icon r-doc">📄</div>
+        <div class="r-text"><div class="r-title">Official Python Tutorial</div><div class="r-sub">docs.python.org · Comprehensive</div></div>
+      </a>
+      <a href="https://www.kaggle.com/learn/python" class="resource-card" target="_blank">
+        <div class="r-icon r-art">🎓</div>
+        <div class="r-text"><div class="r-title">Kaggle Python Course</div><div class="r-sub">Free · Hands-on exercises</div></div>
+      </a>
+    </div>
+
+    <div class="callout callout-tip">
+      <div class="callout-icon">🎯</div>
+      <div><div class="callout-title">Practice project for this topic</div><p>Build a small script that reads a CSV of employee data, calculates the average salary by department, handles missing values, and writes a summary report to a text file.</p></div>
+    </div>
+
+    <div class="page-nav">
+      <a href="index.html"><div class="pn-dir">← Previous</div><div class="pn-title">Home</div></a>
+      <a href="02-numpy.html" class="next"><div class="pn-dir">Next →</div><div class="pn-title">NumPy</div></a>
+    </div>
+  </div>
+</div>
+<script src="js/sidebar.js"></script><script src="js/main.js"></script>
+</body>
+</html>
