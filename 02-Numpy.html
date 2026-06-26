@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NumPy — PyAnalyst</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="sidebar" id="sidebar"></div>
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-breadcrumb">Python Programming → <span>NumPy</span></div>
+    <div class="topbar-btns">
+      <a href="01-python-basics.html" class="btn btn-ghost">← Python Basics</a>
+      <a href="03-pandas.html" class="btn btn-primary">Next: Pandas →</a>
+    </div>
+  </div>
+  <div class="content">
+
+    <div class="topic-hero">
+      <div class="eyebrow">Topic 02 · Python Programming</div>
+      <h1>NumPy — Numerical Python</h1>
+      <p>NumPy is the mathematical backbone of Python's data ecosystem. It introduces the <strong>ndarray</strong> — a fast, memory-efficient array that supports vectorised operations without loops. Pandas, Scikit-learn, and TensorFlow are all built on NumPy.</p>
+      <div class="tags">
+        <span>ndarray</span><span>Indexing</span><span>Slicing</span><span>Broadcasting</span><span>Math Ops</span><span>Random</span><span>Reshaping</span><span>Boolean Masking</span>
+      </div>
+    </div>
+
+    <div class="callout callout-info">
+      <div class="callout-icon">📦</div>
+      <div><div class="callout-title">Installation</div><p><code>pip install numpy</code> — then always import as: <code>import numpy as np</code></p></div>
+    </div>
+
+    <!-- 1. Creating Arrays -->
+    <h2 class="concept-title">1. Creating ndarrays</h2>
+    <p>The NumPy array (<code>ndarray</code>) is like a Python list, but all elements must be the same type, and operations on it are dramatically faster because they run in compiled C code.</p>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">python</span><button class="copy-btn btn btn-ghost" style="padding:4px 10px;font-size:11px;">Copy</button></div>
+      <pre><span class="kw">import</span> numpy <span class="kw">as</span> np
+
+<span class="cm"># From a Python list</span>
+scores = np.array([<span class="num">85</span>, <span class="num">92</span>, <span class="num">78</span>, <span class="num">95</span>, <span class="num">88</span>])
+<span class="fn">print</span>(scores)           <span class="cm"># [85 92 78 95 88]</span>
+<span class="fn">print</span>(scores.dtype)     <span class="cm"># int64</span>
+<span class="fn">print</span>(scores.shape)     <span class="cm"># (5,)</span>
+
+<span class="cm"># 2D array (matrix)</span>
+matrix = np.array([[<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>],
+                   [<span class="num">4</span>, <span class="num">5</span>, <span class="num">6</span>],
+                   [<span class="num">7</span>, <span class="num">8</span>, <span class="num">9</span>]])
+<span class="fn">print</span>(matrix.shape)     <span class="cm"># (3, 3)</span>
+<span class="fn">print</span>(matrix.ndim)      <span class="cm"># 2</span>
+
+<span class="cm"># Special arrays</span>
+np.zeros((3, 4))         <span class="cm"># 3×4 array of 0.0</span>
+np.ones((2, 5))          <span class="cm"># 2×5 array of 1.0</span>
+np.full((3, 3), <span class="num">7</span>)      <span class="cm"># 3×3 filled with 7</span>
+np.eye(<span class="num">4</span>)               <span class="cm"># 4×4 identity matrix</span>
+
+<span class="cm"># Ranges</span>
+np.arange(<span class="num">0</span>, <span class="num">20</span>, <span class="num">2</span>)     <span class="cm"># [0 2 4 6 8 10 12 14 16 18]</span>
+np.linspace(<span class="num">0</span>, <span class="num">1</span>, <span class="num">5</span>)    <span class="cm"># [0. 0.25 0.5 0.75 1.] — 5 evenly spaced</span></pre>
+    </div>
+
+    <!-- 2. Indexing & Slicing -->
+    <h2 class="concept-title">2. Indexing &amp; Slicing</h2>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">python</span><button class="copy-btn btn btn-ghost" style="padding:4px 10px;font-size:11px;">Copy</button></div>
+      <pre>arr = np.array([<span class="num">10</span>, <span class="num">20</span>, <span class="num">30</span>, <span class="num">40</span>, <span class="num">50</span>])
+
+<span class="cm"># 1D indexing</span>
+arr[<span class="num">0</span>]       <span class="cm"># 10</span>
+arr[-<span class="num">1</span>]      <span class="cm"># 50</span>
+arr[<span class="num">1</span>:<span class="num">4</span>]     <span class="cm"># [20 30 40]</span>
+arr[::<span class="num">2</span>]     <span class="cm"># [10 30 50] — every 2nd</span>
+
+<span class="cm"># 2D indexing — [row, col]</span>
+m = np.array([[<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>],
+              [<span class="num">4</span>, <span class="num">5</span>, <span class="num">6</span>],
+              [<span class="num">7</span>, <span class="num">8</span>, <span class="num">9</span>]])
+
+m[<span class="num">0</span>, <span class="num">1</span>]      <span class="cm"># 2 — row 0, col 1</span>
+m[<span class="num">1</span>, :]      <span class="cm"># [4 5 6] — entire row 1</span>
+m[:, <span class="num">2</span>]      <span class="cm"># [3 6 9] — entire column 2</span>
+m[:<span class="num">2</span>, :<span class="num">2</span>]   <span class="cm"># [[1,2],[4,5]] — top-left 2×2 block</span>
+
+<span class="cm"># Fancy indexing — select specific rows/cols</span>
+data = np.array([<span class="num">100</span>, <span class="num">200</span>, <span class="num">300</span>, <span class="num">400</span>, <span class="num">500</span>])
+<span class="fn">print</span>(data[[<span class="num">0</span>, <span class="num">2</span>, <span class="num">4</span>]])   <span class="cm"># [100 300 500]</span></pre>
+    </div>
+
+    <!-- 3. Broadcasting -->
+    <h2 class="concept-title">3. Broadcasting</h2>
+    <p>Broadcasting is NumPy's most powerful feature. It lets you perform operations between arrays of different shapes without writing loops. NumPy "stretches" the smaller array to match the larger one.</p>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">python</span><button class="copy-btn btn btn-ghost" style="padding:4px 10px;font-size:11px;">Copy</button></div>
+      <pre><span class="cm"># Scalar broadcast — apply to every element</span>
+prices = np.array([<span class="num">100</span>, <span class="num">200</span>, <span class="num">300</span>])
+discounted = prices * <span class="num">0.9</span>      <span class="cm"># [90. 180. 270.]</span>
+with_tax = prices + <span class="num">18</span>         <span class="cm"># [118 218 318]</span>
+
+<span class="cm"># Array broadcast — element-wise operations</span>
+a = np.array([<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>])
+b = np.array([<span class="num">10</span>, <span class="num">20</span>, <span class="num">30</span>])
+<span class="fn">print</span>(a + b)   <span class="cm"># [11 22 33]</span>
+<span class="fn">print</span>(a * b)   <span class="cm"># [10 40 90]</span>
+
+<span class="cm"># 2D broadcasting — add a row to each row of a matrix</span>
+matrix = np.array([[<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>],
+                   [<span class="num">4</span>, <span class="num">5</span>, <span class="num">6</span>]])
+row = np.array([<span class="num">10</span>, <span class="num">20</span>, <span class="num">30</span>])
+<span class="fn">print</span>(matrix + row)
+<span class="cm"># [[11 22 33]
+#  [14 25 36]]</span>
+
+<span class="cm"># Real use: normalise scores (subtract mean, divide by std)</span>
+scores = np.array([<span class="num">72</span>, <span class="num">85</span>, <span class="num">90</span>, <span class="num">60</span>, <span class="num">95</span>])
+normalised = (scores - scores.mean()) / scores.std()
+<span class="fn">print</span>(normalised.round(<span class="num">2</span>))</pre>
+    </div>
+
+    <!-- 4. Math Operations -->
+    <h2 class="concept-title">4. Mathematical Operations</h2>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">python</span><button class="copy-btn btn btn-ghost" style="padding:4px 10px;font-size:11px;">Copy</button></div>
+      <pre>data = np.array([<span class="num">23</span>, <span class="num">45</span>, <span class="num">12</span>, <span class="num">67</span>, <span class="num">34</span>, <span class="num">89</span>, <span class="num">56</span>])
+
+<span class="cm"># Aggregation</span>
+<span class="fn">print</span>(data.sum())       <span class="cm"># 326</span>
+<span class="fn">print</span>(data.mean())      <span class="cm"># 46.57</span>
+<span class="fn">print</span>(data.std())       <span class="cm"># standard deviation</span>
+<span class="fn">print</span>(data.var())       <span class="cm"># variance</span>
+<span class="fn">print</span>(data.min())       <span class="cm"># 12</span>
+<span class="fn">print</span>(data.max())       <span class="cm"># 89</span>
+<span class="fn">print</span>(data.median())    <span class="cm"># use np.median(data)</span>
+
+<span class="cm"># On 2D arrays — axis matters!</span>
+m = np.array([[<span class="num">10</span>, <span class="num">20</span>], [<span class="num">30</span>, <span class="num">40</span>]])
+<span class="fn">print</span>(m.sum(axis=<span class="num">0</span>))   <span class="cm"># [40 60] — sum down each column</span>
+<span class="fn">print</span>(m.sum(axis=<span class="num">1</span>))   <span class="cm"># [30 70] — sum across each row</span>
+
+<span class="cm"># Math functions</span>
+np.sqrt(data)           <span class="cm"># square root of each element</span>
+np.abs([-<span class="num">3</span>, <span class="num">4</span>, -<span class="num">1</span>])   <span class="cm"># [3 4 1]</span>
+np.log(data)            <span class="cm"># natural log</span>
+np.exp([<span class="num">0</span>, <span class="num">1</span>, <span class="num">2</span>])      <span class="cm"># [1. 2.718 7.389]</span>
+np.round(data.mean(), <span class="num">2</span>)</pre>
+    </div>
+
+    <!-- 5. Boolean Masking -->
+    <h2 class="concept-title">5. Boolean Masking</h2>
+    <p>One of the most useful NumPy patterns — filter data by condition without loops. This is the foundation of pandas filtering too.</p>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">python</span><button class="copy-btn btn btn-ghost" style="padding:4px 10px;font-size:11px;">Copy</button></div>
+      <pre>salaries = np.array([<span class="num">35000</span>, <span class="num">52000</span>, <span class="num">28000</span>, <span class="num">75000</span>, <span class="num">48000</span>, <span class="num">91000</span>])
+
+<span class="cm"># Create a boolean mask</span>
+mask = salaries &gt; <span class="num">50000</span>
+<span class="fn">print</span>(mask)           <span class="cm"># [False True False True False True]</span>
+
+<span class="cm"># Apply mask to filter array</span>
+high_earners = salaries[mask]
+<span class="fn">print</span>(high_earners)   <span class="cm"># [52000 75000 91000]</span>
+
+<span class="cm"># Combine conditions with & (and) | (or)</span>
+mid_range = salaries[(salaries &gt;= <span class="num">40000</span>) &amp; (salaries &lt;= <span class="num">80000</span>)]
+<span class="fn">print</span>(mid_range)      <span class="cm"># [52000 75000 48000]</span>
+
+<span class="cm"># np.where — like IF in Excel</span>
+<span class="cm"># np.where(condition, value_if_true, value_if_false)</span>
+labels = np.where(salaries &gt; <span class="num">50000</span>, <span class="str">"Senior"</span>, <span class="str">"Junior"</span>)
+<span class="fn">print</span>(labels)
+<span class="cm"># ['Junior' 'Senior' 'Junior' 'Senior' 'Junior' 'Senior']</span>
+
+<span class="cm"># Count how many match</span>
+<span class="fn">print</span>(np.sum(salaries &gt; <span class="num">50000</span>))   <span class="cm"># 3</span></pre>
+    </div>
+
+    <!-- 6. Random -->
+    <h2 class="concept-title">6. Random Number Generation</h2>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">python</span><button class="copy-btn btn btn-ghost" style="padding:4px 10px;font-size:11px;">Copy</button></div>
+      <pre>rng = np.random.default_rng(seed=<span class="num">42</span>)  <span class="cm"># reproducible results</span>
+
+<span class="cm"># Uniform distribution [0, 1)</span>
+rng.random(<span class="num">5</span>)              <span class="cm"># [0.77, 0.43, 0.02, ...]</span>
+
+<span class="cm"># Random integers</span>
+rng.integers(<span class="num">1</span>, <span class="num">101</span>, size=<span class="num">10</span>)   <span class="cm"># 10 random ints 1–100</span>
+
+<span class="cm"># Normal (Gaussian) distribution — common in stats</span>
+samples = rng.normal(loc=<span class="num">50</span>, scale=<span class="num">10</span>, size=<span class="num">1000</span>)
+<span class="fn">print</span>(<span class="fn">f</span><span class="str">"Mean: {samples.mean():.2f}, Std: {samples.std():.2f}"</span>)
+
+<span class="cm"># Shuffle array in-place</span>
+data = np.array([<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>, <span class="num">5</span>])
+rng.shuffle(data)
+
+<span class="cm"># Random sample without replacement</span>
+population = np.arange(<span class="num">1</span>, <span class="num">51</span>)
+sample = rng.choice(population, size=<span class="num">10</span>, replace=<span class="kw">False</span>)</pre>
+    </div>
+
+    <!-- 7. Reshaping -->
+    <h2 class="concept-title">7. Reshaping &amp; Stacking</h2>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">python</span><button class="copy-btn btn btn-ghost" style="padding:4px 10px;font-size:11px;">Copy</button></div>
+      <pre>arr = np.arange(<span class="num">12</span>)   <span class="cm"># [0 1 2 ... 11]</span>
+
+<span class="cm"># Reshape — total elements must stay the same</span>
+m = arr.reshape(<span class="num">3</span>, <span class="num">4</span>)   <span class="cm"># 3 rows, 4 columns</span>
+<span class="cm"># [[ 0  1  2  3]
+#  [ 4  5  6  7]
+#  [ 8  9 10 11]]</span>
+
+arr.reshape(<span class="num">4</span>, <span class="num">3</span>)        <span class="cm"># 4 rows, 3 columns</span>
+arr.reshape(<span class="num">2</span>, <span class="num">2</span>, <span class="num">3</span>)    <span class="cm"># 3D: 2 blocks, 2 rows, 3 cols</span>
+arr.reshape(-<span class="num">1</span>, <span class="num">4</span>)      <span class="cm"># -1 means "figure out this dim"</span>
+
+<span class="cm"># Flatten back to 1D</span>
+m.flatten()              <span class="cm"># always returns a copy</span>
+m.ravel()                <span class="cm"># returns a view (faster)</span>
+
+<span class="cm"># Stacking arrays</span>
+a = np.array([<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>])
+b = np.array([<span class="num">4</span>, <span class="num">5</span>, <span class="num">6</span>])
+
+np.hstack([a, b])        <span class="cm"># [1 2 3 4 5 6] — horizontal</span>
+np.vstack([a, b])        <span class="cm"># [[1 2 3]       — vertical
+                          #  [4 5 6]]</span>
+np.concatenate([a, b])   <span class="cm"># [1 2 3 4 5 6]</span>
+
+<span class="cm"># Transpose</span>
+m.T                      <span class="cm"># swap rows and columns</span></pre>
+    </div>
+
+    <!-- Resources -->
+    <h2 class="concept-title">📚 Learning Resources</h2>
+    <div class="resource-grid">
+      <a href="https://www.youtube.com/watch?v=QUT1VHiLmmI" class="resource-card" target="_blank">
+        <div class="r-icon r-yt">▶️</div>
+        <div class="r-text"><div class="r-title">Keith Galli — NumPy Full Tutorial</div><div class="r-sub">YouTube · 1hr complete walkthrough</div></div>
+      </a>
+      <a href="https://numpy.org/doc/stable/user/quickstart.html" class="resource-card" target="_blank">
+        <div class="r-icon r-doc">📄</div>
+        <div class="r-text"><div class="r-title">NumPy Quickstart</div><div class="r-sub">numpy.org · Official guide</div></div>
+      </a>
+      <a href="https://www.kaggle.com/learn/intro-to-machine-learning" class="resource-card" target="_blank">
+        <div class="r-icon r-art">🎓</div>
+        <div class="r-text"><div class="r-title">Kaggle NumPy Exercises</div><div class="r-sub">Practice problems with solutions</div></div>
+      </a>
+    </div>
+
+    <div class="callout callout-tip">
+      <div class="callout-icon">🎯</div>
+      <div><div class="callout-title">Practice project</div><p>Generate 1000 random exam scores (normal distribution, mean=65, std=12). Calculate pass rate (score ≥ 50), grade distribution using np.where, and plot a histogram.</p></div>
+    </div>
+
+    <div class="page-nav">
+      <a href="01-python-basics.html"><div class="pn-dir">← Previous</div><div class="pn-title">Python Basics</div></a>
+      <a href="03-pandas.html" class="next"><div class="pn-dir">Next →</div><div class="pn-title">Pandas</div></a>
+    </div>
+  </div>
+</div>
+<script src="js/sidebar.js"></script><script src="js/main.js"></script>
+</body>
+</html>
